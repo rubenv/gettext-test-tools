@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import fileinput
+import sys
 import re
 
 fatal = False
@@ -55,6 +56,8 @@ for line in fileinput.input():
     if test["fuzzy"] > 0 or test["untranslated"] > 0:
         failures += 1
 
+if fatal:
+    sys.exit(1)
 
 print('<?xml version="1.0" encoding="UTF-8" ?>')
 print('<testsuites>')
