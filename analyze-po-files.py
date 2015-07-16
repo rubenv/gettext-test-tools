@@ -41,11 +41,11 @@ for line in fileinput.input():
         count = int(matches.group(1))
         label = matches.group(2)
 
-        if label == "translated messages":
+        if label.startswith("translated message"):
             test["translated"] = count
-        elif label == "fuzzy translations":
+        elif label.startswith("fuzzy translation"):
             test["fuzzy"] = count
-        elif label == "untranslated messages":
+        elif label.startswith("untranslated message"):
             test["untranslated"] = count
         else:
             print("Unknown label: " + label)
