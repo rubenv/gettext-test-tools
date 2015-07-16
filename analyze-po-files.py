@@ -5,7 +5,7 @@ import sys
 import re
 
 fatal = False
-infoMatch = re.compile('^(\w+\.po): (.*)\.$')
+infoMatch = re.compile('^(.*?\.po): (.*)\.$')
 labelMatch = re.compile('^(\d+) (.*)$')
 
 failures = 0
