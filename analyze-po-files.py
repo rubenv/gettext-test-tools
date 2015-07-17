@@ -72,7 +72,7 @@ for test in tests:
         print('      <failure type="expect">Found %d fuzzy translations</failure>' % test["fuzzy"])
     print('    </testcase>')
     print('    <testcase classname="%s" name="Has no untranslated messages">' % test["filename"])
-    if test["fuzzy"] > 0:
+    if test["untranslated"] > 0:
         print('      <failure type="expect">Found %d untranslated messages</failure>' % test["untranslated"])
     print('    </testcase>')
 print('  </testsuite>')
