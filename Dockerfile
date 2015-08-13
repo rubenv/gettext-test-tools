@@ -1,4 +1,4 @@
-FROM centos
+FROM alpine:latest
 
-RUN yum -y install gettext python; yum clean all
+RUN apk add --update gettext python bash && rm -rf /var/cache/apk/*
 ADD *.py *.sh /usr/bin/
