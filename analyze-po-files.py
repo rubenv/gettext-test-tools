@@ -8,6 +8,7 @@ fatal = False
 infoMatch = re.compile('^(.*?)\.po: (.*)\.$')
 labelMatch = re.compile('^(\d+) (.*)$')
 
+threshold = 5 # Max % of fuzzy / untranslated messages
 failures = 0
 tests = []
 
@@ -28,6 +29,7 @@ for line in fileinput.input():
         "translated": 0,
         "fuzzy": 0,
         "untranslated": 0,
+        "total": 0,
     }
 
     parts = rest.split(', ')
@@ -41,6 +43,7 @@ for line in fileinput.input():
         count = int(matches.group(1))
         label = matches.group(2)
 
+        test["total"] += count
         if label.startswith("translated message"):
             test["translated"] = count
         elif label.startswith("fuzzy translation"):
@@ -67,13 +70,16 @@ for test in tests:
     if test["translated"] == 0:
         print('      <failure type="expect">Expected translated messages</failure>')
     print('    </testcase>')
-    print('    <testcase classname="%s" name="Has no fuzzy translations">' % test["filename"])
-    if test["fuzzy"] > 0:
-        print('      <failure type="expect">Found %d fuzzy translations</failure>' % test["fuzzy"])
-    print('    </testcase>')
-    print('    <testcase classname="%s" name="Has no untranslated messages">' % test["filename"])
-    if test["untranslated"] > 0:
-        print('      <failure type="expect">Found %d untranslated messages</failure>' % test["untranslated"])
-    print('    </testcase>')
+    if test["total"] > 0:
+        print('    <testcase classname="%s" name="Has not too much fuzzy translations">' % test["filename"])
+        fuzzy = test["fuzzy"] * 100 / float(test["total"])
+        if fuzzy > threshold:
+            print('      <failure type="expect">Found %d fuzzy translations</failure>' % test["fuzzy"])
+        print('    </testcase>')
+        print('    <testcase classname="%s" name="Has no untranslated messages">' % test["filename"])
+        untranslated = test["untranslated"] * 100 / float(test["total"])
+        if untranslated > 0:
+            print('      <failure type="expect">Found %d untranslated messages</failure>' % test["untranslated"])
+        print('    </testcase>')
 print('  </testsuite>')
 print('</testsuites>')
