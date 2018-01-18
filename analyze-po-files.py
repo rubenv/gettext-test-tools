@@ -22,7 +22,7 @@ for line in fileinput.input():
         fatal = True
         continue
 
-    filename = matches.group(1)
+    filename = matches.group(1).replace(".", "-")
     rest = matches.group(2)
     test = {
         "filename": filename,
