@@ -76,9 +76,9 @@ for test in tests:
         if fuzzy > threshold:
             print('      <failure type="expect">Found %d fuzzy translations</failure>' % test["fuzzy"])
         print('    </testcase>')
-        print('    <testcase classname="%s" name="Has no untranslated messages">' % test["filename"])
+        print('    <testcase classname="%s" name="Has not too much untranslated messages">' % test["filename"])
         untranslated = test["untranslated"] * 100 / float(test["total"])
-        if untranslated > 0:
+        if untranslated > threshold:
             print('      <failure type="expect">Found %d untranslated messages</failure>' % test["untranslated"])
         print('    </testcase>')
 print('  </testsuite>')
